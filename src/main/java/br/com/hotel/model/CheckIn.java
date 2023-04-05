@@ -2,18 +2,26 @@ package br.com.hotel.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = ("check_in"))
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CheckIn {
 	
 	@Id
@@ -21,8 +29,8 @@ public class CheckIn {
 	private Long id;
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_hospede")
+	@ManyToOne(optional = false)
+	@JsonIgnore
 	private Hospede hospede;
 	
 	private LocalDateTime dataEntrada;
