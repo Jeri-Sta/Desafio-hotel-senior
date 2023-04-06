@@ -1,5 +1,6 @@
 package br.com.hotel.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,5 +40,7 @@ public class CheckIn {
 	
 	@NotNull
 	private boolean adicionaVeiculo;
+	
+	private BigDecimal valorTotalHospedagem;
 
 }

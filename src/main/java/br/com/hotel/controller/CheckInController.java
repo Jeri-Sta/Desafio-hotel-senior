@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.hotel.dto.CheckInDto;
 import br.com.hotel.dto.HospedeDto;
+import br.com.hotel.error.ResourceNotFoundException;
 import br.com.hotel.service.CheckInService;
 import jakarta.validation.Valid;
 
@@ -27,8 +28,7 @@ public class CheckInController {
 	
 	@GetMapping
 	public List<CheckInDto> listarTodos() {
-		List<CheckInDto> lista = service.obterTodos();
-		return lista;
+		return service.obterTodos();
 	}
 	
 	@GetMapping("/{id}")
@@ -46,6 +46,11 @@ public class CheckInController {
 	
 	@PostMapping
 	public ResponseEntity<CheckInDto> realizaCheckIn(@RequestBody @Valid CheckInDto checkInDto, UriComponentsBuilder uri){
+		HospedeDto hospede = service.obterHospedePorId(checkInDto.getHospede().getId());
+		if(hospede == null) {
+			throw new ResourceNotFoundException("Hospede nao encontrado. ID: " + checkInDto.getHospede().getId());
+		}
+		
 		CheckInDto retorno = service.realizarCheckIn(checkInDto);
 		URI endereco = uri.path("/checkIn/{id}").buildAndExpand(retorno.getId()).toUri();
 		

@@ -42,7 +42,6 @@ public class Hospede {
 	
 	private BigDecimal valorGasto;
 	
-	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "hospede")
-	private List<CheckIn> checkIn = new ArrayList<>();
+	private BigDecimal valorUltimaHospedagem;
 
 }

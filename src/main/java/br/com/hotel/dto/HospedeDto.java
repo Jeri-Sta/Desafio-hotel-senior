@@ -1,5 +1,6 @@
 package br.com.hotel.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,5 +20,6 @@ public class HospedeDto {
 	private String nome;
 	private String documento;
 	private String telefone;
-	private List<CheckIn> checkIn = new ArrayList<>();
+	private BigDecimal valorGasto;
+	private BigDecimal valorUltimaHospedagem;
 }
