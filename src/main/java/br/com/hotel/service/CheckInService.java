@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.hotel.dto.CheckInDto;
@@ -40,9 +41,9 @@ public class CheckInService {
 	@Autowired
 	private final ModelMapper modelMapper;
 
-	public List<CheckInDto> obterTodos() {
-		return checkInRepository.findAll().stream().map(p -> modelMapper.map(p, CheckInDto.class))
-				.collect(Collectors.toList());
+	public Page<CheckInDto> obterTodos(Pageable paginacao) {
+		return checkInRepository.findAll(paginacao)
+				.map(p -> modelMapper.map(p, CheckInDto.class));
 	}
 
 	public CheckInDto obterPorId(Long id) {
@@ -100,33 +101,53 @@ public class CheckInService {
 		BigDecimal totalDiaria = BigDecimal.ZERO;
 		List<TabelaValores> tabelas = tabelaValoresRepository.findAll();
 		Duration periodo = Duration.between(checkIn.getDataEntrada(), checkIn.getDataSaida());
-		LocalDateTime dia = LocalDateTime.of(checkIn.getDataEntrada().getYear(), checkIn.getDataEntrada().getMonthValue(), checkIn.getDataEntrada().getDayOfMonth(), checkIn.getDataEntrada().getHour(), checkIn.getDataEntrada().getMinute());
+		LocalDateTime dia = checkIn.getDataEntrada();//LocalDateTime.of(checkIn.getDataEntrada().getYear(), checkIn.getDataEntrada().getMonthValue(), checkIn.getDataEntrada().getDayOfMonth(), checkIn.getDataEntrada().getHour(), checkIn.getDataEntrada().getMinute());
+		System.out.println(periodo.toDaysPart());
 		for (int i = 0; i <= periodo.toDays(); i++) {
 			for (TabelaValores tabelaValores : tabelas) {
 				if(dia.getDayOfWeek().getValue() >= tabelaValores.getDiaInicio().getValor() && dia.getDayOfWeek().getValue() <= tabelaValores.getDiaFim().getValor()) {
-					totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
+					if(dia.toLocalDate().isEqual(checkIn.getDataSaida().toLocalDate())) {
+						if(depoisDoHorario(checkIn.getDataSaida(), dia)) {
+							totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
+							if(checkIn.isAdicionaVeiculo()) {
+								totalDiaria = totalDiaria.add(tabelaValores.getValorVaga());
+							}
+							checkIn.setValorTotalHospedagem(totalDiaria);
+						}
+					} else {
+						totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
+						if(checkIn.isAdicionaVeiculo()) {
+							totalDiaria = totalDiaria.add(tabelaValores.getValorVaga());
+						}
+						checkIn.setValorTotalHospedagem(totalDiaria);
+					}
+					/*totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
 					if(checkIn.isAdicionaVeiculo()) {
 						totalDiaria = totalDiaria.add(tabelaValores.getValorVaga());
 					}
 					if(depoisDoHorario(checkIn.getDataSaida(), dia)) {
 						totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
-					}
-					checkIn.setValorTotalHospedagem(totalDiaria);
+					}*/
+					//checkIn.setValorTotalHospedagem(totalDiaria);
 				}
 			}
-			dia = LocalDateTime.of(dia.getYear(), dia.getMonth(), dia.getDayOfMonth() + 1, dia.getHour(), dia.getMinute());
+			dia = dia.plusDays(1);
 		}
 	}
 	
 	private boolean depoisDoHorario(LocalDateTime dataFim, LocalDateTime diaCont) {
-		LocalDate dia = LocalDate.of(diaCont.getYear(), diaCont.getMonthValue(), diaCont.getDayOfMonth());
-		LocalDate diaFim = LocalDate.of(dataFim.getYear(), dataFim.getMonthValue(), dataFim.getDayOfMonth());
+		LocalDate dia = diaCont.toLocalDate();
+		LocalDate diaFim = dataFim.toLocalDate();
 		if(dia.isEqual(diaFim)) {
-			LocalTime hora = LocalTime.of(dataFim.getHour(), dataFim.getMinute());
+			LocalTime hora = dataFim.toLocalTime();
 			return hora.isAfter(LocalTime.of(16, 30)) ? true : false;
 		} else {
 			return false;
 		}
+	}
+	
+	public void excluiCheckIn(Long id) {
+		checkInRepository.deleteById(id);
 	}
 	
 }

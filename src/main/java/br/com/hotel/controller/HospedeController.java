@@ -4,7 +4,11 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +30,8 @@ public class HospedeController {
 	private HospedeService service;
 	
 	@GetMapping
-	public List<HospedeDto> listarTodos(){
-		List<HospedeDto> hospedes = service.obterTodos();
+	public Page<HospedeDto> listarTodos(@PageableDefault(size = 10) Pageable paginacao){
+		Page<HospedeDto> hospedes = service.obterTodos(paginacao);
 		return hospedes;
 	}
 	
@@ -43,6 +47,16 @@ public class HospedeController {
 		return ResponseEntity.ok(hospede);
 	}
 	
+	@GetMapping("/presentes")
+	public Page<HospedeDto> buscaHospedesPresentes(@PageableDefault(size = 3) Pageable paginacao){
+		return service.obterPresentes(paginacao);
+	}
+	
+	@GetMapping("/ausentes")
+	public Page<HospedeDto> buscaHospedesAusentes(@PageableDefault(size = 3) Pageable paginacao) {
+		return service.obterAusentes(paginacao);
+	}
+	
 	@PostMapping
 	public ResponseEntity<HospedeDto> criaHospede(@RequestBody @Valid HospedeDto hospede, UriComponentsBuilder uri) {
 		HospedeDto hospedeCriado = service.criarHospede(hospede);	
@@ -50,4 +64,5 @@ public class HospedeController {
 		
 		return ResponseEntity.created(endereco).body(hospedeCriado);
 	}
+	
 }

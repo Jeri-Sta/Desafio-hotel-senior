@@ -11,7 +11,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +37,10 @@ public class CheckIn {
 	@JsonIgnore
 	private Hospede hospede;
 	
+	//@FutureOrPresent
 	private LocalDateTime dataEntrada;
 	
+	//@Future
 	private LocalDateTime dataSaida;
 	
 	@NotNull

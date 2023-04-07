@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.hotel.dto.HospedeDto;
@@ -23,10 +25,9 @@ public class HospedeService {
 	@Autowired
     private final ModelMapper modelMapper;
 	
-	public List<HospedeDto> obterTodos() {
-        return repository.findAll().stream()
-                .map(p -> modelMapper.map(p, HospedeDto.class))
-                .collect(Collectors.toList());
+	public Page<HospedeDto> obterTodos(Pageable paginacao) {
+        return repository.findAll(paginacao)
+        		.map(p -> modelMapper.map(p, HospedeDto.class));
     }
 	
 	public HospedeDto obterPorId(Long id) {
@@ -47,6 +48,16 @@ public class HospedeService {
 		Hospede hospede = repository.findByDocumento(documento);
 		
 		return modelMapper.map(hospede, HospedeDto.class);
+	}
+
+	public Page<HospedeDto> obterPresentes(Pageable paginacao) {
+		return repository.buscaPresentes(paginacao)
+				.map(p -> modelMapper.map(p, HospedeDto.class));
+	}
+	
+	public Page<HospedeDto> obterAusentes(Pageable paginacao) {
+		return repository.buscaAusentes(paginacao)
+				.map(p -> modelMapper.map(p, HospedeDto.class));
 	}
 
 }
