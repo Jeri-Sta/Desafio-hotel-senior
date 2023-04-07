@@ -1,7 +1,5 @@
 package br.com.hotel.service;
 
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.hotel.dto.TabelaValoresDto;
-import br.com.hotel.model.TabelaValores;
 import br.com.hotel.repository.TabelaValoresRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +23,6 @@ public class TabelaValoresService {
 	public Page<TabelaValoresDto> listaTodos(Pageable paginacao) {
 		return repository.findAll(paginacao)
 				.map(p -> modelMapper.map(p, TabelaValoresDto.class));
-	}
-	
-	public TabelaValoresDto cadastraTabelaValores(TabelaValoresDto dto) {
-		TabelaValores tabela = modelMapper.map(dto, TabelaValores.class);
-		repository.save(tabela);
-		return modelMapper.map(tabela, TabelaValoresDto.class);
 	}
 
 }
