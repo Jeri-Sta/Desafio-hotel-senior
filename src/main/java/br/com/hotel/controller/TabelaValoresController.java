@@ -1,5 +1,6 @@
 package br.com.hotel.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public class TabelaValoresController {
 	private TabelaValoresService service;
 	
 	@GetMapping
-	public Page<TabelaValoresDto> listaTodos (@PageableDefault(size = 10) Pageable paginacao){
+	public Page<TabelaValoresDto> listaTodos (@ParameterObject @PageableDefault(size = 10) Pageable paginacao){
 		return service.listaTodos(paginacao);
 	}
 

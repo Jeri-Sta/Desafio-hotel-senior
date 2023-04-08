@@ -17,7 +17,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Table(name = "tabela_valores")
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TabelaValores {	

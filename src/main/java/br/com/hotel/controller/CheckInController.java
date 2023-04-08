@@ -2,6 +2,7 @@ package br.com.hotel.controller;
 
 import java.net.URI;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class CheckInController {
 	private CheckInService service;
 	
 	@GetMapping
-	public Page<CheckInDto> listarTodos(@PageableDefault(size = 10) Pageable paginacao) {
+	public Page<CheckInDto> listarTodos(@ParameterObject @PageableDefault(size = 10) Pageable paginacao) {
 		return service.obterTodos(paginacao);
 	}
 	

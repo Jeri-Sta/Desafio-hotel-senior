@@ -34,16 +34,15 @@ public class CheckInService {
 
 	@Autowired
 	private HospedeRepository hospedeRepository;
-	
+
 	@Autowired
 	private TabelaValoresRepository tabelaValoresRepository;
 
 	@Autowired
-	private final ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
 	public Page<CheckInDto> obterTodos(Pageable paginacao) {
-		return checkInRepository.findAll(paginacao)
-				.map(p -> modelMapper.map(p, CheckInDto.class));
+		return checkInRepository.findAll(paginacao).map(p -> modelMapper.map(p, CheckInDto.class));
 	}
 
 	public CheckInDto obterPorId(Long id) {
@@ -76,78 +75,63 @@ public class CheckInService {
 			hospede = hospedeRepository.findByNome(info);
 			break;
 		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + filtro);
-		}
+	}
 		return modelMapper.map(hospede, HospedeDto.class);
 	}
 
 	public CheckInDto realizarCheckIn(CheckInDto checkInDto) {
 		CheckIn checkIn = modelMapper.map(checkInDto, CheckIn.class);
-		
+
 		calculaValorHospedagem(checkIn);
 		atualizaValoresHospede(checkIn);
-		checkInRepository.save(checkIn);		
+		checkInRepository.save(checkIn); 
 		return modelMapper.map(checkIn, CheckInDto.class);
 	}
 
 	private void atualizaValoresHospede(CheckIn checkIn) {
 		BigDecimal valorTotalAnt = hospedeRepository.buscaValorTotal(checkIn.getHospede().getId());
-		valorTotalAnt = (valorTotalAnt != null ? valorTotalAnt : BigDecimal.ZERO);
-		hospedeRepository.atualizaValores(valorTotalAnt.add(checkIn.getValorTotalHospedagem()),checkIn.getValorTotalHospedagem());
+		valorTotalAnt = (valorTotalAnt != null && valorTotalAnt != BigDecimal.ZERO ? valorTotalAnt : BigDecimal.ZERO);
+		hospedeRepository.atualizaValores(checkIn.getHospede().getId(),
+				valorTotalAnt.add(checkIn.getValorTotalHospedagem()), checkIn.getValorTotalHospedagem());
 	}
-	
+
 	private void calculaValorHospedagem(CheckIn checkIn) {
 		BigDecimal totalDiaria = BigDecimal.ZERO;
 		List<TabelaValores> tabelas = tabelaValoresRepository.findAll();
 		Duration periodo = Duration.between(checkIn.getDataEntrada(), checkIn.getDataSaida());
-		LocalDateTime dia = checkIn.getDataEntrada();//LocalDateTime.of(checkIn.getDataEntrada().getYear(), checkIn.getDataEntrada().getMonthValue(), checkIn.getDataEntrada().getDayOfMonth(), checkIn.getDataEntrada().getHour(), checkIn.getDataEntrada().getMinute());
-		System.out.println(periodo.toDaysPart());
+		LocalDateTime dia = checkIn.getDataEntrada();
 		for (int i = 0; i <= periodo.toDays(); i++) {
 			for (TabelaValores tabelaValores : tabelas) {
-				if(dia.getDayOfWeek().getValue() >= tabelaValores.getDiaInicio().getValor() && dia.getDayOfWeek().getValue() <= tabelaValores.getDiaFim().getValor()) {
-					if(dia.toLocalDate().isEqual(checkIn.getDataSaida().toLocalDate())) {
-						if(depoisDoHorario(checkIn.getDataSaida(), dia)) {
+				if (dia.getDayOfWeek().getValue() >= tabelaValores.getDiaInicio().getValor()
+						&& dia.getDayOfWeek().getValue() <= tabelaValores.getDiaFim().getValor()) {
+					if (dia.toLocalDate().isEqual(checkIn.getDataSaida().toLocalDate())) {
+						if (depoisDoHorario(checkIn.getDataSaida(), dia)) {
 							totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
-							if(checkIn.isAdicionaVeiculo()) {
+							if (checkIn.isAdicionaVeiculo()) {
 								totalDiaria = totalDiaria.add(tabelaValores.getValorVaga());
 							}
 							checkIn.setValorTotalHospedagem(totalDiaria);
 						}
 					} else {
 						totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
-						if(checkIn.isAdicionaVeiculo()) {
+						if (checkIn.isAdicionaVeiculo()) {
 							totalDiaria = totalDiaria.add(tabelaValores.getValorVaga());
 						}
 						checkIn.setValorTotalHospedagem(totalDiaria);
 					}
-					/*totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
-					if(checkIn.isAdicionaVeiculo()) {
-						totalDiaria = totalDiaria.add(tabelaValores.getValorVaga());
-					}
-					if(depoisDoHorario(checkIn.getDataSaida(), dia)) {
-						totalDiaria = totalDiaria.add(tabelaValores.getValorDiaria());
-					}*/
-					//checkIn.setValorTotalHospedagem(totalDiaria);
 				}
 			}
 			dia = dia.plusDays(1);
 		}
 	}
-	
+
 	private boolean depoisDoHorario(LocalDateTime dataFim, LocalDateTime diaCont) {
-		LocalDate dia = diaCont.toLocalDate();
-		LocalDate diaFim = dataFim.toLocalDate();
-		if(dia.isEqual(diaFim)) {
-			LocalTime hora = dataFim.toLocalTime();
-			return hora.isAfter(LocalTime.of(16, 30)) ? true : false;
-		} else {
-			return false;
-		}
+		LocalTime hora = dataFim.toLocalTime();
+		return hora.isAfter(LocalTime.of(16, 30)) ? true : false;
 	}
-	
+
 	public void excluiCheckIn(Long id) {
 		checkInRepository.deleteById(id);
 	}
-	
+
 }

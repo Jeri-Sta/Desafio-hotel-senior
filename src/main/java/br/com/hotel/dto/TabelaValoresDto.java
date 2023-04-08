@@ -19,4 +19,5 @@ public class TabelaValoresDto {
 	private DiasSemana diaFim;	
 	private BigDecimal valorDiaria;	
 	private BigDecimal valorVaga;	
+	
 }

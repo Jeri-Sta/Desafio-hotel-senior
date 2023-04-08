@@ -18,7 +18,7 @@ public class TabelaValoresService {
 	private TabelaValoresRepository repository;
 	
 	@Autowired
-    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 	
 	public Page<TabelaValoresDto> listaTodos(Pageable paginacao) {
 		return repository.findAll(paginacao)

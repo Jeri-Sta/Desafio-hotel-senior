@@ -2,6 +2,7 @@ package br.com.hotel.controller;
 
 import java.net.URI;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class HospedeController {
 	private HospedeService service;
 	
 	@GetMapping
-	public Page<HospedeDto> listarTodos(@PageableDefault(size = 10) Pageable paginacao){
+	public Page<HospedeDto> listarTodos(@ParameterObject @PageableDefault(size = 10) Pageable paginacao){
 		Page<HospedeDto> hospedes = service.obterTodos(paginacao);
 		return hospedes;
 	}
@@ -46,12 +47,12 @@ public class HospedeController {
 	}
 	
 	@GetMapping("/presentes")
-	public Page<HospedeDto> buscaHospedesPresentes(@PageableDefault(size = 3) Pageable paginacao){
+	public Page<HospedeDto> buscaHospedesPresentes(@ParameterObject @PageableDefault(size = 3) Pageable paginacao){
 		return service.obterPresentes(paginacao);
 	}
 	
 	@GetMapping("/ausentes")
-	public Page<HospedeDto> buscaHospedesAusentes(@PageableDefault(size = 3) Pageable paginacao) {
+	public Page<HospedeDto> buscaHospedesAusentes(@ParameterObject @PageableDefault(size = 3) Pageable paginacao) {
 		return service.obterAusentes(paginacao);
 	}
 	

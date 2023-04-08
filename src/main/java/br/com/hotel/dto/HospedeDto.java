@@ -18,5 +18,6 @@ public class HospedeDto {
 	private String documento;
 	private String telefone;
 	private BigDecimal valorGasto;
-	private BigDecimal valorUltimaHospedagem;
+	private BigDecimal valorUltimaHospedagem;	
+	
 }

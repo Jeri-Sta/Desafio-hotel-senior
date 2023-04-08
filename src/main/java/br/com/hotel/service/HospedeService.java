@@ -1,5 +1,7 @@
 package br.com.hotel.service;
 
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 import br.com.hotel.dto.HospedeDto;
 import br.com.hotel.model.Hospede;
 import br.com.hotel.repository.HospedeRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,7 +21,7 @@ public class HospedeService {
 	private HospedeRepository repository;
 	
 	@Autowired
-    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 	
 	public Page<HospedeDto> obterTodos(Pageable paginacao) {
         return repository.findAll(paginacao)
@@ -28,10 +29,8 @@ public class HospedeService {
     }
 	
 	public HospedeDto obterPorId(Long id) {
-        Hospede hospede = repository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-
-        return modelMapper.map(hospede, HospedeDto.class);
+        Optional<Hospede> optional = repository.findById(id);;
+        return modelMapper.map(optional.get(), HospedeDto.class);
     }
 	
 	public HospedeDto criarHospede(HospedeDto dto) {
