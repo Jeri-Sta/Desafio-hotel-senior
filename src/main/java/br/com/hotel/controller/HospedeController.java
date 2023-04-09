@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.hotel.dto.HospedeDto;
+import br.com.hotel.error.UniqueKeyException;
 import br.com.hotel.service.HospedeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -57,11 +58,14 @@ public class HospedeController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<HospedeDto> cadastrarHospede(@RequestBody @Valid HospedeDto hospede, UriComponentsBuilder uri) {
-		HospedeDto hospedeCriado = service.cadastrarHospede(hospede);	
-		URI endereco = uri.path("hospedes/{id}").buildAndExpand(hospedeCriado.getId()).toUri();
-		
-		return ResponseEntity.created(endereco).body(hospedeCriado);
+	public ResponseEntity<HospedeDto> cadastrarHospede(@RequestBody @Valid HospedeDto hospede, UriComponentsBuilder uri) throws UniqueKeyException {
+		if(service.obterPorDocumento(hospede.getDocumento()) != null) {
+			throw new UniqueKeyException("Já existe um hospede com o documento " + hospede.getDocumento() + " cadastrado!");
+		} else {
+			HospedeDto hospedeCriado = service.cadastrarHospede(hospede);	
+			URI endereco = uri.path("hospedes/{id}").buildAndExpand(hospedeCriado.getId()).toUri();		
+			return ResponseEntity.created(endereco).body(hospedeCriado);
+		}		
 	}
 	
 }

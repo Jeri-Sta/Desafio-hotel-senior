@@ -53,9 +53,8 @@ public class CheckInController {
 	public ResponseEntity<CheckInDto> realizarCheckIn(@RequestBody @Valid CheckInDto checkInDto, UriComponentsBuilder uri){
 		HospedeDto hospede = service.obterHospedePorId(checkInDto.getHospede().getId());
 		if(hospede == null) {
-			throw new ResourceNotFoundException("Hospede nao encontrado. ID: " + checkInDto.getHospede().getId());
-		}
-		
+			throw new ResourceNotFoundException("Hospede não encontrado. ID: " + checkInDto.getHospede().getId());
+		}		
 		CheckInDto retorno = service.realizarCheckIn(checkInDto);
 		URI endereco = uri.path("/checkIn/{id}").buildAndExpand(retorno.getId()).toUri();
 		

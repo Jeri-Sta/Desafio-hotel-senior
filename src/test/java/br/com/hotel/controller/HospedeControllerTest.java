@@ -3,6 +3,7 @@ package br.com.hotel.controller;
 import static org.hamcrest.CoreMatchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,6 +28,8 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.hotel.dto.HospedeDto;
+import br.com.hotel.error.ResourceNotFoundException;
+import br.com.hotel.error.UniqueKeyException;
 import br.com.hotel.model.Hospede;
 import br.com.hotel.service.HospedeService;
 
@@ -137,6 +140,16 @@ class HospedeControllerTest {
 		ResponseEntity<HospedeDto> response = controller.cadastrarHospede(hospedeDto,builder);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		assertNotNull(response.getHeaders().get("Location"));
+	}
+	
+	@Test
+	@DisplayName("Deverá retornar um erro de BAD_REQUEST informando que já existe um hospede com o documento informado")
+	void testCadastrarHospedeComDocumentoExistente() throws Exception {
+		Mockito.when(service.obterPorDocumento(hospedeDto.getDocumento())).thenReturn(hospedeDto);
+		
+		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");		
+		UniqueKeyException thrown = assertThrows(UniqueKeyException.class, () -> controller.cadastrarHospede(hospedeDto, builder));
+		assertEquals("Já existe um hospede com o documento " + hospede.getDocumento() + " cadastrado!", thrown.getMessage());
 	}
 
 	private void startHospede() {

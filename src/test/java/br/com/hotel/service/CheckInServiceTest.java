@@ -70,7 +70,7 @@ class CheckInServiceTest {
 	private static Long id1 = 1L;
 	private static Long id2 = 2L;
 	private static LocalDateTime dataInicio1 = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
-	private static LocalDateTime dataInicio2 = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
+	private static LocalDateTime dataInicio2 = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY)).withHour(15);
 	private static LocalDateTime dataApos1 = dataInicio1.with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY));
 	private static LocalDateTime dataApos2 = dataInicio2.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
 	private static LocalDateTime dataFim1 = LocalDateTime.of(dataApos1.getYear(), dataApos1.getMonthValue(), dataApos1.getDayOfMonth(), 15, 30);

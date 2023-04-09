@@ -100,7 +100,7 @@ public class CheckInService {
 		List<TabelaValores> tabelas = tabelaValoresRepository.findAll();
 		Duration periodo = Duration.between(checkIn.getDataEntrada(), checkIn.getDataSaida());
 		LocalDateTime dia = checkIn.getDataEntrada();
-		for (int i = 0; i <= periodo.toDays(); i++) {
+		for (int i = 0; i <= Math.round(periodo.toDays()); i++) {
 			for (TabelaValores tabelaValores : tabelas) {
 				if (dia.getDayOfWeek().getValue() >= tabelaValores.getDiaInicio().getValor()
 						&& dia.getDayOfWeek().getValue() <= tabelaValores.getDiaFim().getValor()) {

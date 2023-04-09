@@ -235,7 +235,7 @@ class CheckInControllerTest {
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");
 		ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> controller.realizarCheckIn(checkInDto1, builder));
-		assertEquals("Hospede nao encontrado. ID: " + checkInDto1.getHospede().getId(), thrown.getMessage());
+		assertEquals("Hospede não encontrado. ID: " + checkInDto1.getHospede().getId(), thrown.getMessage());
 		
 	}
 

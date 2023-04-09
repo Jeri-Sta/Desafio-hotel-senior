@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.hotel.dto.HospedeDto;
+import br.com.hotel.error.UniqueKeyException;
 import br.com.hotel.model.Hospede;
 import br.com.hotel.repository.HospedeRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,7 @@ public class HospedeService {
     }
 	
 	public HospedeDto cadastrarHospede(HospedeDto dto) {
-		Hospede hospede = modelMapper.map(dto, Hospede.class);
-        repository.save(hospede);
-
+		Hospede hospede = modelMapper.map(dto, Hospede.class);  
         return modelMapper.map(hospede, HospedeDto.class);
     }
 	

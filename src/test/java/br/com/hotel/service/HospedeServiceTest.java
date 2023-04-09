@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import br.com.hotel.dto.HospedeDto;
+import br.com.hotel.error.UniqueKeyException;
 import br.com.hotel.model.Hospede;
 import br.com.hotel.repository.HospedeRepository;
 
