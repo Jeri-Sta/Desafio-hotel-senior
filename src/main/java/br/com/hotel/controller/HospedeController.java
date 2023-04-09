@@ -29,36 +29,36 @@ public class HospedeController {
 	private HospedeService service;
 	
 	@GetMapping
-	public Page<HospedeDto> listarTodos(@ParameterObject @PageableDefault(size = 10) Pageable paginacao){
+	public Page<HospedeDto> obterTodos(@ParameterObject @PageableDefault(size = 10) Pageable paginacao){
 		Page<HospedeDto> hospedes = service.obterTodos(paginacao);
 		return hospedes;
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<HospedeDto> listarPorId(@PathVariable @NotNull Long id){
+	public ResponseEntity<HospedeDto> obterPorId(@PathVariable @NotNull Long id){
 		HospedeDto hospede = service.obterPorId(id);
 		return ResponseEntity.ok(hospede);
 	}
 	
 	@GetMapping("/documento/{documento}")
-	public ResponseEntity<HospedeDto> listarPorDocumento(@PathVariable @NotNull String documento){
+	public ResponseEntity<HospedeDto> obterPorDocumento(@PathVariable @NotNull String documento){
 		HospedeDto hospede = service.obterPorDocumento(documento);
 		return ResponseEntity.ok(hospede);
 	}
 	
 	@GetMapping("/presentes")
-	public Page<HospedeDto> buscaHospedesPresentes(@ParameterObject @PageableDefault(size = 3) Pageable paginacao){
+	public Page<HospedeDto> obterHospedesPresentes(@ParameterObject @PageableDefault(size = 3) Pageable paginacao){
 		return service.obterPresentes(paginacao);
 	}
 	
 	@GetMapping("/ausentes")
-	public Page<HospedeDto> buscaHospedesAusentes(@ParameterObject @PageableDefault(size = 3) Pageable paginacao) {
+	public Page<HospedeDto> obterHospedesAusentes(@ParameterObject @PageableDefault(size = 3) Pageable paginacao) {
 		return service.obterAusentes(paginacao);
 	}
 	
 	@PostMapping
-	public ResponseEntity<HospedeDto> criaHospede(@RequestBody @Valid HospedeDto hospede, UriComponentsBuilder uri) {
-		HospedeDto hospedeCriado = service.criarHospede(hospede);	
+	public ResponseEntity<HospedeDto> cadastrarHospede(@RequestBody @Valid HospedeDto hospede, UriComponentsBuilder uri) {
+		HospedeDto hospedeCriado = service.cadastrarHospede(hospede);	
 		URI endereco = uri.path("hospedes/{id}").buildAndExpand(hospedeCriado.getId()).toUri();
 		
 		return ResponseEntity.created(endereco).body(hospedeCriado);

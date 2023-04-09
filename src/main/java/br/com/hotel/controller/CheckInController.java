@@ -32,25 +32,25 @@ public class CheckInController {
 	private CheckInService service;
 	
 	@GetMapping
-	public Page<CheckInDto> listarTodos(@ParameterObject @PageableDefault(size = 10) Pageable paginacao) {
+	public Page<CheckInDto> obterTodos(@ParameterObject @PageableDefault(size = 10) Pageable paginacao) {
 		return service.obterTodos(paginacao);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<CheckInDto> listaPorId(@PathVariable @Valid Long id) {
+	public ResponseEntity<CheckInDto> obterPorId(@PathVariable @Valid Long id) {
 		CheckInDto checkIn = service.obterPorId(id);
 		return ResponseEntity.ok(checkIn);
 	}
 	
 	@GetMapping("/hospede/{filtro}/{info}")
-	public ResponseEntity<HospedeDto> listaHospedePorFiltro(@PathVariable @Valid String filtro,
+	public ResponseEntity<HospedeDto> obterHospedePorFiltro(@PathVariable @Valid String filtro,
 							@PathVariable @Valid String info) {
 		HospedeDto hospede = service.obterHospedePorFiltro(filtro, info);
 		return ResponseEntity.ok(hospede);
 	}
 	
 	@PostMapping
-	public ResponseEntity<CheckInDto> realizaCheckIn(@RequestBody @Valid CheckInDto checkInDto, UriComponentsBuilder uri){
+	public ResponseEntity<CheckInDto> realizarCheckIn(@RequestBody @Valid CheckInDto checkInDto, UriComponentsBuilder uri){
 		HospedeDto hospede = service.obterHospedePorId(checkInDto.getHospede().getId());
 		if(hospede == null) {
 			throw new ResourceNotFoundException("Hospede nao encontrado. ID: " + checkInDto.getHospede().getId());
@@ -63,8 +63,8 @@ public class CheckInController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<CheckInDto> excluir(@PathVariable @NotNull Long id) {
-		service.excluiCheckIn(id);
+	public ResponseEntity<CheckInDto> excluirCheckIn(@PathVariable @NotNull Long id) {
+		service.excluirCheckIn(id);
 		return ResponseEntity.noContent().build();
 	}
 	

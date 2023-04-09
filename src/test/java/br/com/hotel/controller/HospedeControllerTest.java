@@ -63,21 +63,21 @@ class HospedeControllerTest {
 
 	@Test
 	@DisplayName("Deverá retornar uma page dos hospedes")
-	void testListarTodos() {
+	void testObterTodos() {
 		Mockito.when(service.obterTodos(paginacao)).thenReturn(page);
 		Mockito.when(modelMapper.map(any(Page.class), HospedeDto.class)).thenReturn(hospedeDto);
 
-		Page<HospedeDto> response = controller.listarTodos(paginacao);
+		Page<HospedeDto> response = controller.obterTodos(paginacao);
 		assertNotNull(response.getContent().get(0));
 		assertEquals(HospedeDto.class, response.getContent().get(0).getClass());
 	}
 
 	@Test
 	@DisplayName("Deve retornar uma ReponseEntity do hospede")
-	void testListarPorId() {
+	void testObterPorId() {
 		Mockito.when(service.obterPorId(Mockito.anyLong())).thenReturn(hospedeDto);
 
-		ResponseEntity<HospedeDto> response = controller.listarPorId(1L);
+		ResponseEntity<HospedeDto> response = controller.obterPorId(1L);
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(id, response.getBody().getId());
@@ -88,10 +88,10 @@ class HospedeControllerTest {
 
 	@Test
 	@DisplayName("Deve retornar uma ResponseEntity do hospede ao buscar por documento")
-	void testListarPorDocumento() {
+	void testObterPorDocumento() {
 		Mockito.when(service.obterPorDocumento(documento)).thenReturn(hospedeDto);
 
-		ResponseEntity<HospedeDto> response = controller.listarPorDocumento(documento);
+		ResponseEntity<HospedeDto> response = controller.obterPorDocumento(documento);
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(id, response.getBody().getId());
@@ -102,10 +102,10 @@ class HospedeControllerTest {
 
 	@Test
 	@DisplayName("Deve retornar uma page de hospedes ao buscar pelos presentes")
-	void testBuscaHospedesPresentes() {
+	void testObterHospedesPresentes() {
 		Mockito.when(service.obterPresentes(paginacao)).thenReturn(page);
 
-		Page<HospedeDto> response = controller.buscaHospedesPresentes(paginacao);
+		Page<HospedeDto> response = controller.obterHospedesPresentes(paginacao);
 		assertNotNull(response.getContent().get(0));
 		assertEquals(HospedeDto.class, response.getContent().get(0).getClass());
 		assertEquals(id, response.getContent().get(0).getId());
@@ -116,10 +116,10 @@ class HospedeControllerTest {
 
 	@Test
 	@DisplayName("Deve retornar uma page de hospedes ao buscar pelos ausentes")
-	void testBuscaHospedesAusentes() {
+	void testObterHospedesAusentes() {
 		Mockito.when(service.obterAusentes(paginacao)).thenReturn(page);
 
-		Page<HospedeDto> response = controller.buscaHospedesAusentes(paginacao);
+		Page<HospedeDto> response = controller.obterHospedesAusentes(paginacao);
 		assertNotNull(response.getContent().get(0));
 		assertEquals(HospedeDto.class, response.getContent().get(0).getClass());
 		assertEquals(id, response.getContent().get(0).getId());
@@ -130,11 +130,11 @@ class HospedeControllerTest {
 
 	@Test
 	@DisplayName("Deverá criar um hospede e retornar com o status 201")
-	void testCriaHospede() throws Exception {
-		Mockito.when(service.criarHospede(hospedeDto)).thenReturn(hospedeDto);
+	void testCadastrarHospede() throws Exception {
+		Mockito.when(service.cadastrarHospede(hospedeDto)).thenReturn(hospedeDto);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");		
-		ResponseEntity<HospedeDto> response = controller.criaHospede(hospedeDto,builder);
+		ResponseEntity<HospedeDto> response = controller.cadastrarHospede(hospedeDto,builder);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		assertNotNull(response.getHeaders().get("Location"));
 	}

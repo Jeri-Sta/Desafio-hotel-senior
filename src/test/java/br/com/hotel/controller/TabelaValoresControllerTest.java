@@ -47,10 +47,10 @@ class TabelaValoresControllerTest {
 	
 	@Test
 	@DisplayName("Quando listar todos, deverá retornar uma page")
-	void testListaTodos() {
-		Mockito.when(service.listaTodos(paginacao)).thenReturn(page);
+	void testObterTodos() {
+		Mockito.when(service.obterTodos(paginacao)).thenReturn(page);
 		
-		Page<TabelaValoresDto> response = controller.listaTodos(paginacao);
+		Page<TabelaValoresDto> response = controller.obterTodos(paginacao);
 		assertNotNull(response.getContent().get(0));
 		assertEquals(TabelaValoresDto.class, response.getContent().get(0).getClass());
 	}

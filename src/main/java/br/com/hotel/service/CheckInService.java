@@ -130,7 +130,7 @@ public class CheckInService {
 		return hora.isAfter(LocalTime.of(16, 30)) ? true : false;
 	}
 
-	public void excluiCheckIn(Long id) {
+	public void excluirCheckIn(Long id) {
 		checkInRepository.deleteById(id);
 	}
 

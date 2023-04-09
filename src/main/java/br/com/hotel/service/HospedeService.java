@@ -33,7 +33,7 @@ public class HospedeService {
         return modelMapper.map(optional.get(), HospedeDto.class);
     }
 	
-	public HospedeDto criarHospede(HospedeDto dto) {
+	public HospedeDto cadastrarHospede(HospedeDto dto) {
 		Hospede hospede = modelMapper.map(dto, Hospede.class);
         repository.save(hospede);
 
@@ -47,12 +47,12 @@ public class HospedeService {
 	}
 
 	public Page<HospedeDto> obterPresentes(Pageable paginacao) {
-		return repository.buscaPresentes(paginacao)
+		return repository.obterPresentes(paginacao)
 				.map(p -> modelMapper.map(p, HospedeDto.class));
 	}
 	
 	public Page<HospedeDto> obterAusentes(Pageable paginacao) {
-		return repository.buscaAusentes(paginacao)
+		return repository.obterAusentes(paginacao)
 				.map(p -> modelMapper.map(p, HospedeDto.class));
 	}
 

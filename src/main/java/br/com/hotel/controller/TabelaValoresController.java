@@ -20,8 +20,8 @@ public class TabelaValoresController {
 	private TabelaValoresService service;
 	
 	@GetMapping
-	public Page<TabelaValoresDto> listaTodos (@ParameterObject @PageableDefault(size = 10) Pageable paginacao){
-		return service.listaTodos(paginacao);
+	public Page<TabelaValoresDto> obterTodos (@ParameterObject @PageableDefault(size = 10) Pageable paginacao){
+		return service.obterTodos(paginacao);
 	}
 
 }

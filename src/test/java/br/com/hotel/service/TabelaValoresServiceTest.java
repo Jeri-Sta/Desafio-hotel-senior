@@ -48,10 +48,10 @@ class TabelaValoresServiceTest {
 	}
 
 	@Test
-	void testListaTodos() {
+	void testObterTodos() {
 		Mockito.when(repository.findAll(paginacao)).thenReturn(page);
 		
-		Page<TabelaValoresDto> response = service.listaTodos(paginacao);
+		Page<TabelaValoresDto> response = service.obterTodos(paginacao);
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(TabelaValoresDto.class, response.getContent().get(0).getClass());
 		Assertions.assertEquals(2, response.getSize());

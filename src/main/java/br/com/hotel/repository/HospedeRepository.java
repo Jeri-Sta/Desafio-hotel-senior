@@ -32,7 +32,7 @@ public interface HospedeRepository extends JpaRepository<Hospede, Long>{
 			+ "WHERE H.ID = C.HOSPEDE_ID\r\n"
 			+ "AND C.DATA_SAIDA > CURRENT_DATE\r\n"
 			+ "GROUP BY H.ID", nativeQuery = true)
-	Page<Hospede> buscaPresentes(Pageable paginacao);
+	Page<Hospede> obterPresentes(Pageable paginacao);
 	
 	@Query(value = "SELECT h.* FROM HOSPEDES H, CHECK_IN C\r\n"
 			+ "			WHERE H.ID = C.HOSPEDE_ID\r\n"
@@ -42,7 +42,7 @@ public interface HospedeRepository extends JpaRepository<Hospede, Long>{
 			+ "			AND D.DATA_SAIDA > CURRENT_DATE\r\n"
 			+ "			GROUP BY H.ID)\r\n"
 			+ "			GROUP BY H.ID", nativeQuery = true)
-	Page<Hospede> buscaAusentes(Pageable paginacao);
+	Page<Hospede> obterAusentes(Pageable paginacao);
 	
 	
 }

@@ -229,7 +229,7 @@ class CheckInServiceTest {
 	void testExcluiCheckIn() {
 		Mockito.doNothing().when(checkInRepository).deleteById(Mockito.anyLong());
 		
-		service.excluiCheckIn(id1);
+		service.excluirCheckIn(id1);
 		Mockito.verify(checkInRepository, times(1)).deleteById(Mockito.anyLong());
 	}
 	

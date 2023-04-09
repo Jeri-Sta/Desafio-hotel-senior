@@ -97,21 +97,21 @@ class CheckInControllerTest {
 
 	@Test
 	@DisplayName("Deverá retornar uma page de checkIn's")
-	void testListarTodos() {
+	void testObterTodos() {
 		Mockito.when(service.obterTodos(paginacao)).thenReturn(page);
 		Mockito.when(modelMapper.map(any(Page.class), CheckInDto.class)).thenReturn(checkInDto1);
 
-		Page<CheckInDto> response = controller.listarTodos(paginacao);
+		Page<CheckInDto> response = controller.obterTodos(paginacao);
 		assertNotNull(response.getContent().get(0));
 		assertEquals(CheckInDto.class, response.getContent().get(0).getClass());
 	}
 
 	@Test
 	@DisplayName("Deve retornar uma ReponseEntity do checkIn")
-	void testListaPorId() {
+	void testObterPorId() {
 		Mockito.when(service.obterPorId(Mockito.anyLong())).thenReturn(checkInDto1);
 
-		ResponseEntity<CheckInDto> response = controller.listaPorId(1L);
+		ResponseEntity<CheckInDto> response = controller.obterPorId(1L);
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(checkInDto1.getId(), response.getBody().getId());
@@ -123,10 +123,10 @@ class CheckInControllerTest {
 
 	@Test
 	@DisplayName("Deverá retornar uma ReponseEntity de um hospede filtrando pelo nome")
-	void testListaHospedePorFiltroNome() {
+	void testObterHospedePorFiltroNome() {
 		Mockito.when(service.obterHospedePorFiltro("nome", hospedeDto1.getNome())).thenReturn(hospedeDto1);
 
-		ResponseEntity<HospedeDto> response = controller.listaHospedePorFiltro("nome", hospedeDto1.getNome());
+		ResponseEntity<HospedeDto> response = controller.obterHospedePorFiltro("nome", hospedeDto1.getNome());
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(hospedeDto1.getId(), response.getBody().getId());
@@ -137,10 +137,10 @@ class CheckInControllerTest {
 
 	@Test
 	@DisplayName("Deverá retornar uma ReponseEntity de um hospede filtrando pelo documento")
-	void testListaHospedePorFiltroDocumento() {
+	void testObterHospedePorFiltroDocumento() {
 		Mockito.when(service.obterHospedePorFiltro("documento", hospedeDto1.getDocumento())).thenReturn(hospedeDto1);
 
-		ResponseEntity<HospedeDto> response = controller.listaHospedePorFiltro("documento", hospedeDto1.getDocumento());
+		ResponseEntity<HospedeDto> response = controller.obterHospedePorFiltro("documento", hospedeDto1.getDocumento());
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(hospedeDto1.getId(), response.getBody().getId());
@@ -151,10 +151,10 @@ class CheckInControllerTest {
 
 	@Test
 	@DisplayName("Deverá retornar uma ReponseEntity de um hospede filtrando pelo telefone")
-	void testListaHospedePorFiltroTelefone() {
+	void testObterHospedePorFiltroTelefone() {
 		Mockito.when(service.obterHospedePorFiltro("telefone", hospedeDto1.getTelefone())).thenReturn(hospedeDto1);
 
-		ResponseEntity<HospedeDto> response = controller.listaHospedePorFiltro("telefone", hospedeDto1.getTelefone());
+		ResponseEntity<HospedeDto> response = controller.obterHospedePorFiltro("telefone", hospedeDto1.getTelefone());
 		assertNotNull(response);
 		assertNotNull(response.getBody());
 		assertEquals(hospedeDto1.getId(), response.getBody().getId());
@@ -170,7 +170,7 @@ class CheckInControllerTest {
 		Mockito.when(service.obterHospedePorId(Mockito.anyLong())).thenReturn(hospedeDto1);
 
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");
-		ResponseEntity<CheckInDto> response = controller.realizaCheckIn(checkInDto1, builder);
+		ResponseEntity<CheckInDto> response = controller.realizarCheckIn(checkInDto1, builder);
 		Mockito.when(service.obterHospedePorId(Mockito.anyLong())).thenReturn(hospedeDto1);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -192,7 +192,7 @@ class CheckInControllerTest {
 		Mockito.when(service.obterHospedePorId(Mockito.anyLong())).thenReturn(hospedeDto2);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");
-		ResponseEntity<CheckInDto> response = controller.realizaCheckIn(checkInDto2, builder);
+		ResponseEntity<CheckInDto> response = controller.realizarCheckIn(checkInDto2, builder);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		assertNotNull(response.getHeaders().get("Location"));
@@ -215,7 +215,7 @@ class CheckInControllerTest {
 		Mockito.when(service.obterHospedePorId(Mockito.anyLong())).thenReturn(hospedeDto1);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");
-		ResponseEntity<CheckInDto> response = controller.realizaCheckIn(checkInDto1, builder);
+		ResponseEntity<CheckInDto> response = controller.realizarCheckIn(checkInDto1, builder);
 
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(CheckInDto.class, response.getBody().getClass());
@@ -234,17 +234,17 @@ class CheckInControllerTest {
 		Mockito.when(service.obterHospedePorId(1L)).thenReturn(null);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port("8080");
-		ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> controller.realizaCheckIn(checkInDto1, builder));
+		ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> controller.realizarCheckIn(checkInDto1, builder));
 		assertEquals("Hospede nao encontrado. ID: " + checkInDto1.getHospede().getId(), thrown.getMessage());
 		
 	}
 
 	@Test
 	@DisplayName("Deverá excluir um checkIn e retornar com o status 201")
-	void testExcluir() {
-		Mockito.doNothing().when(service).excluiCheckIn(1L);
+	void testExcluirCheckIn() {
+		Mockito.doNothing().when(service).excluirCheckIn(1L);
 
-		ResponseEntity<CheckInDto> response = controller.excluir(1L);
+		ResponseEntity<CheckInDto> response = controller.excluirCheckIn(1L);
 		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 	}
 

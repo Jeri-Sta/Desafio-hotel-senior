@@ -86,11 +86,11 @@ class HospedeServiceTest {
 	
 	@Test
 	@DisplayName("Deve criar um usuário com sucesso")
-	void testCriarHospede() {
+	void testCadastrarHospede() {
 		Mockito.when(repository.save(hospede)).thenReturn(hospede);
 		Mockito.when(modelMapper.map(any(Hospede.class), HospedeDto.class)).thenReturn(hospedeDto);
 		
-		HospedeDto response = service.criarHospede(hospedeDto);
+		HospedeDto response = service.cadastrarHospede(hospedeDto);
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(HospedeDto.class, response.getClass());	
 		Assertions.assertEquals(id, response.getId());
@@ -117,7 +117,7 @@ class HospedeServiceTest {
 	@Test
 	@DisplayName("Deve retornar uma page  ")
 	void testObterPresentes() {
-		Mockito.when(repository.buscaPresentes(paginacao)).thenReturn(page);		
+		Mockito.when(repository.obterPresentes(paginacao)).thenReturn(page);		
 		Page<HospedeDto> response = service.obterPresentes(paginacao);
 		
 		Assertions.assertNotNull(response);
@@ -131,7 +131,7 @@ class HospedeServiceTest {
 
 	@Test
 	void testObterAusentes() {
-		Mockito.when(repository.buscaAusentes(paginacao)).thenReturn(page);		
+		Mockito.when(repository.obterAusentes(paginacao)).thenReturn(page);		
 		Page<HospedeDto> response = service.obterAusentes(paginacao);
 		
 		Assertions.assertNotNull(response);
