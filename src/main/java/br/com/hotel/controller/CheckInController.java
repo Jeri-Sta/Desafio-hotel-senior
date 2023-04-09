@@ -54,7 +54,9 @@ public class CheckInController {
 		HospedeDto hospede = service.obterHospedePorId(checkInDto.getHospede().getId());
 		if(hospede == null) {
 			throw new ResourceNotFoundException("Hospede não encontrado. ID: " + checkInDto.getHospede().getId());
-		}		
+		} else if(!hospede.getDocumento().equalsIgnoreCase(checkInDto.getHospede().getDocumento())) {
+			throw new ResourceNotFoundException("Documento do hospede de ID: " + checkInDto.getHospede().getId() + " está incorreto.");
+		}
 		CheckInDto retorno = service.realizarCheckIn(checkInDto);
 		URI endereco = uri.path("/checkIn/{id}").buildAndExpand(retorno.getId()).toUri();
 		

@@ -35,14 +35,15 @@ public class HospedeService {
     }
 	
 	public HospedeDto cadastrarHospede(HospedeDto dto) {
-		Hospede hospede = modelMapper.map(dto, Hospede.class);  
+		Hospede hospede = modelMapper.map(dto, Hospede.class);
+		repository.save(hospede);
         return modelMapper.map(hospede, HospedeDto.class);
     }
 	
 	public HospedeDto obterPorDocumento(String documento) {
 		Hospede hospede = repository.findByDocumento(documento);
 		
-		return modelMapper.map(hospede, HospedeDto.class);
+		return (hospede != null ? modelMapper.map(hospede, HospedeDto.class) : null);
 	}
 
 	public Page<HospedeDto> obterPresentes(Pageable paginacao) {

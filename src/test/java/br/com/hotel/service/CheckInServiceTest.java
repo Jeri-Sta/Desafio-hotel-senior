@@ -98,7 +98,6 @@ class CheckInServiceTest {
 		Assertions.assertEquals(CheckInDto.class, response.getContent().get(0).getClass());
 		Assertions.assertEquals(2, response.getSize());
 		Assertions.assertEquals(id1, response.getContent().get(0).getId());
-		Assertions.assertEquals(hospede1, response.getContent().get(0).getHospede());
 	}
 
 	@Test
@@ -110,7 +109,7 @@ class CheckInServiceTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(CheckInDto.class, response.getClass());	
 		Assertions.assertEquals(id1, response.getId());
-		Assertions.assertEquals(hospede1, response.getHospede());
+		Assertions.assertEquals(hospedeDto1.getDocumento(), response.getHospede().getDocumento());
 		Assertions.assertEquals(dataInicio1, response.getDataEntrada());
 		Assertions.assertEquals(dataFim1, response.getDataSaida());
 		Assertions.assertEquals(adicionaVeiculo1, response.isAdicionaVeiculo());
@@ -178,7 +177,7 @@ class CheckInServiceTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(CheckInDto.class, response.getClass());	
 		Assertions.assertEquals(id1, response.getId());
-		Assertions.assertEquals(hospede1, response.getHospede());
+		Assertions.assertEquals(hospedeDto1.getDocumento(), response.getHospede().getDocumento());
 		Assertions.assertEquals(dataInicio1, response.getDataEntrada());
 		Assertions.assertEquals(dataFim1, response.getDataSaida());
 		Assertions.assertEquals(adicionaVeiculo1, response.isAdicionaVeiculo());
@@ -196,7 +195,7 @@ class CheckInServiceTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(CheckInDto.class, response.getClass());	
 		Assertions.assertEquals(id2, response.getId());
-		Assertions.assertEquals(hospede2, response.getHospede());
+		Assertions.assertEquals(hospedeDto2.getDocumento(), response.getHospede().getDocumento());
 		Assertions.assertEquals(dataInicio2, response.getDataEntrada());
 		Assertions.assertEquals(dataFim2, response.getDataSaida());
 		Assertions.assertEquals(adicionaVeiculo2, response.isAdicionaVeiculo());
@@ -217,7 +216,7 @@ class CheckInServiceTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertEquals(CheckInDto.class, response.getClass());	
 		Assertions.assertEquals(id1, response.getId());
-		Assertions.assertEquals(hospede1, response.getHospede());
+		Assertions.assertEquals(hospedeDto1.getDocumento(), response.getHospede().getDocumento());
 		Assertions.assertEquals(dataInicio1, response.getDataEntrada());
 		Assertions.assertEquals(dataFim1, response.getDataSaida());
 		Assertions.assertEquals(adicionaVeiculo1, response.isAdicionaVeiculo());
@@ -240,8 +239,8 @@ class CheckInServiceTest {
 		hospedeDto2 = new HospedeDto(id2,"Maria","6666666666","99999999999", BigDecimal.ZERO, BigDecimal.ZERO);
 		checkIn1 = new CheckIn(id1, hospede1, dataInicio1, dataFim1, adicionaVeiculo1, valorTotal1);
 		checkIn2 = new CheckIn(id2, hospede2, dataInicio2, dataFim2, adicionaVeiculo2, valorTotal2);
-		checkInDto1 = new CheckInDto(id1, hospede1, dataInicio1, dataFim1, adicionaVeiculo1, valorTotal1);
-		checkInDto2 = new CheckInDto(id2, hospede2, dataInicio2, dataFim2, adicionaVeiculo2, valorTotal2);
+		checkInDto1 = new CheckInDto(id1, hospedeDto1, dataInicio1, dataFim1, adicionaVeiculo1, valorTotal1);
+		checkInDto2 = new CheckInDto(id2, hospedeDto2, dataInicio2, dataFim2, adicionaVeiculo2, valorTotal2);
 		optionalHospede = Optional.of(hospede1);
 		optionalCheckIn = Optional.of(checkIn1);
 		paginacao = Pageable.ofSize(10);

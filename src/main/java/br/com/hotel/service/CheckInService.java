@@ -56,7 +56,7 @@ public class CheckInService {
 		if (hospede.isEmpty()) {
 			return null;
 		} else {
-			return modelMapper.map(hospede, HospedeDto.class);
+			return modelMapper.map(hospede.get(), HospedeDto.class);
 		}
 	}
 

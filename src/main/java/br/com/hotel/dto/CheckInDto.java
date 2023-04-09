@@ -16,7 +16,7 @@ import lombok.Setter;
 public class CheckInDto {
 	
 	private Long id;
-	private Hospede hospede;
+	private HospedeDto hospede;
 	private LocalDateTime dataEntrada;
 	private LocalDateTime dataSaida;
 	private boolean adicionaVeiculo;
