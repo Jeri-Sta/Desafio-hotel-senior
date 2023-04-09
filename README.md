@@ -4,7 +4,7 @@ Nesse projeto foram utilizados as seguintes recursos:
 - Spring Framework
 - Postgresql
 - Flyway
-- Java 11
+- Java 17
 - Lombok
 - ModelMapper
 - Mockito
