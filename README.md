@@ -17,6 +17,8 @@ Nesse projeto foram utilizados as seguintes recursos:
 ====================================IMPORTANTE====================================
 
 # Após rodar o projeto será disponibilizada uma documentação dos endpoints no link http://localhost:8080/swagger-ui/index.html
+![image](https://user-images.githubusercontent.com/63917668/231139642-3069a1b6-5bd9-4c8f-b9dc-87929bc9ff42.png)
+
 
 =================================================================================
 
