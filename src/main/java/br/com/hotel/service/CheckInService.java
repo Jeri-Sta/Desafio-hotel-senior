@@ -2,7 +2,6 @@ package br.com.hotel.service;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -63,19 +62,19 @@ public class CheckInService {
 	public HospedeDto obterHospedePorFiltro(String filtro, String info) {
 		Hospede hospede = new Hospede();
 		switch (filtro) {
-		case "documento": {
-			hospede = hospedeRepository.findByDocumento(info);
-			break;
+			case "documento": {
+				hospede = hospedeRepository.findByDocumento(info);
+				break;
+			}
+			case "telefone": {
+				hospede = hospedeRepository.findByTelefone(info);
+				break;
+			}
+			case "nome": {
+				hospede = hospedeRepository.findByNome(info);
+				break;
+			}
 		}
-		case "telefone": {
-			hospede = hospedeRepository.findByTelefone(info);
-			break;
-		}
-		case "nome": {
-			hospede = hospedeRepository.findByNome(info);
-			break;
-		}
-	}
 		return modelMapper.map(hospede, HospedeDto.class);
 	}
 
@@ -84,7 +83,7 @@ public class CheckInService {
 
 		calculaValorHospedagem(checkIn);
 		atualizaValoresHospede(checkIn);
-		checkInRepository.save(checkIn); 
+		checkInRepository.save(checkIn);
 		return modelMapper.map(checkIn, CheckInDto.class);
 	}
 

@@ -12,27 +12,26 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
 @Table(name = "tabela_valores")
 @NoArgsConstructor
 @AllArgsConstructor
-public class TabelaValores {	
-	
+public class TabelaValores {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Enumerated(EnumType.STRING)
 	private DiasSemana diaInicio;
-	
+
 	@Enumerated(EnumType.STRING)
 	private DiasSemana diaFim;
-	
+
 	private BigDecimal valorDiaria;
-	
+
 	private BigDecimal valorVaga;
 
 }
